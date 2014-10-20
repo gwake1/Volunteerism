@@ -11,9 +11,17 @@ function addItemToList($list, itemText){
     $list.appendChild($li);
 }
 
+function neighborGroup (list, groupSize, target){
+  var listClone = list.slice(0);
+  while(listClone.length > 0){
+    var listItems = listClone.splice(0,groupSize);
+    addItemToList(target, listItems.join(" &amp; "));
+  }
+}
+
 document.addEventListener("DOMContentLoaded", function(){
     var $form = document.getElementById("generate-group");
-    var students = ["Bob", "Joe", "Susie", "Sam", "Julie"];
+    var students = ["Bob", "Joe", "Susie", "Sam", "Julie", "Davis", "Noel"];
 
     $form.addEventListener("submit", function(event){
         event.preventDefault();
@@ -27,11 +35,10 @@ document.addEventListener("DOMContentLoaded", function(){
             var studentName = students[studentNumber];
             addItemToList($ul, studentName);
         } else if(groupCriteria === "neighbor-pairing") {
-            var studentsClone = students.slice(0);
-            while( studentsClone.length > 0 ){
-                var studentNames = studentsClone.splice(0, 2);
-                addItemToList($ul, studentNames.join(" &amp; "));
+            neighborGroup (students, 2, $ul);
+        } else if(groupCriteria==="teams-of-three") {
+            neighborGroup (students, 3, $ul);
             }
         }
-    });
+    );
 });
